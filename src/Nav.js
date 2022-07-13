@@ -1,15 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 
 
 
-const Nav = ({ users, things, view })=> {
+const Nav = ({ users, things, match })=> {
+  const view = match.params.view;
+
   return (
     <nav>
-      <a href='#' className={ view === '' ? 'selected': ''}>Home</a>
-      <a href='#things' className={ view === 'things' ? 'selected': ''}>Things ({ things.length })</a>
-      <a href='#users' className={ view === 'users' ? 'selected': ''}>Users ({ users.length })</a>
+      <Link to='/' className={ !view  ? 'selected': ''}>Home</Link>
+      <Link to='/things' className={ view === 'things' ? 'selected': ''}>Things ({ things.length })</Link>
+      <Link to='/users' className={ view === 'users' ? 'selected': ''}>Users ({ users.length })</Link>
     </nav>
   );
 }

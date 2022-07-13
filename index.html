@@ -1,18 +1,68 @@
 <html>
   <head>
     <script src='/dist/main.js' defer></script>
-<style>
-nav {
-  display: flex;
-  justify-content: space-around;
-  align-items: flex-end;
-}
-
-nav a.selected {
-  font-weight: bold;
-  font-size: 1.5rem;
-}
-</style>
+    <style>
+      nav {
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-end;
+      }
+      
+      nav a.selected {
+        font-weight: bold;
+        font-size:xx-large;
+      }
+      body {
+        text-align: center;
+      }
+      
+      .highRank, .things, .users {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      .highRank td, .highRank th, .things td, .highRank th, .users td, .users th {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+      }
+      .highRank tr:nth-child(even), .things tr:nth-child(even), .users tr:nth-child(even){
+        background-color: #f2f2f2
+      }
+      .highRank th, .things th, .users th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        background-color: antiquewhite;
+        color:rgb(30, 28, 28);
+      }
+      nav {
+        overflow: hidden;
+        background-color: #333;
+      }
+      nav a {
+        float: left;
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 20px;
+        text-decoration: none;
+      }
+      nav a.right {
+        float: right;
+      }
+       
+      /* Change color on hover */
+      nav a:hover {
+        background-color: #ddd;
+        color: black;
+      }
+      li {
+        list-style: none;
+      }
+     a {
+        text-decoration: none;
+        color: black;
+      }
+      </style>
   </head>
   <body>
     <div id='app'></div>

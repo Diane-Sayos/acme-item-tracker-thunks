@@ -2,18 +2,11 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import logger from 'redux-logger';
 import thunk from 'redux-thunk';
 import axios from 'axios';
+import { faker } from '@faker-js/faker';
 
 const initialState = {
-  view: window.location.hash.slice(1),
   users: [],
   things: []
-};
-
-const viewReducer = (state =window.location.hash.slice(1), action)=> { 
-  if(action.type === 'SET_VIEW'){
-    return action.view;
-  }
-  return state;
 };
 
 const usersReducer = (state = [], action)=> { 
@@ -25,6 +18,9 @@ const usersReducer = (state = [], action)=> {
   }
   if(action.type === 'CREATE_USER'){
     return [...state, action.user ]; 
+  }
+  if(action.type === 'UPDATE_USER'){
+    return state.map(user => user.id !== action.user.id ? user : action.user);
   }
   return state;
 };
@@ -48,7 +44,6 @@ const thingsReducer = (state = [], action)=> {
 const reducer = combineReducers({
   users: usersReducer,
   things: thingsReducer,
-  view: viewReducer
 });
 
 const updateThing = (thing)=> {
@@ -57,16 +52,52 @@ const updateThing = (thing)=> {
     dispatch({ type: 'UPDATE_THING', thing });
   };
 };
-const deleteThing = (thing)=> {
-  return async(dispatch)=> {
-    await axios.delete(`/api/things/${thing.id}`);
-    dispatch({ type: 'DELETE_THING', thing });
+// const deleteThing = (thing)=> {
+//   return async(dispatch)=> {
+//     await axios.delete(`/api/things/${thing.id}`);
+//     dispatch({ type: 'DELETE_THING', thing });
+//     history.push(`/things/${thing.id`});
+//   };
+// };
+//thunk for createUser--could not figure out how to add history
+// const createUser = () => {
+//   return async(dispatch)=> {
+//     const user = (await axios.post('/api/users', {name: faker.name.findName()})).data;
+//     dispatch({ type: 'CREATE_USER', user});
+//     history.push(`/users/${user.id}`);
+//   };
+// };
+const removeThingFromUser = (thing) => {
+  return async(dispatch) => {
+    thing = {...thing, userId: null}
+    const updatedThing = (await axios.put(`/api/things/${thing.id}`, thing)).data
+    dispatch({ type: 'UPDATE_THING', thing: updatedThing});
   };
 };
+//thunk for deleteUser--cannot figure out how to add history
+// const deleteUser = (user) => {
+//   async(dispatch) => {
+//     await axios.delete(`/api/users/${user.id}`);
+//       dispatch({ type: 'DELETE_USER', user});
+//   }
+// };
+const createThing = () => {
+  return async(dispatch) => {
+    const response = await axios.post('/api/things', { name: faker.commerce.product()});
+    const thing = response.data;
+    dispatch({ type: 'CREATE_THING', thing });
+  }
+};
+const updateUserRank = (user)=> {
+  return async(dispatch)=> {
+    user = (await axios.put(`/api/users/${user.id}`, user)).data;
+    dispatch({ type: 'UPDATE_USER', user });
+  };
+};
+const middleware = applyMiddleware(logger, thunk);
+const store = createStore(reducer, middleware);
 
-const store = createStore(reducer, applyMiddleware(logger, thunk));
-
-export { deleteThing, updateThing };
+export { updateThing, removeThingFromUser, createThing, updateUserRank };
 
 export default store;
 
