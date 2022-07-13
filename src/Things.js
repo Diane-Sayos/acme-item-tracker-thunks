@@ -1,7 +1,7 @@
 import React from 'react';
 import ThingForm from './ThingForm';
 import { connect } from 'react-redux';
-import { updateThing } from './store';
+import { updateThing, deleteThing } from './store';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
@@ -16,7 +16,7 @@ const Things = ({ things, users, deleteThing, increment, updateThing, match })=>
     } else {
       const select = document.querySelector('#mySelect');
       select.value? thing.userId : '';
-      alert("User is too weak to carry extra items. User need to hit the Gym!")
+      alert("User is too broke to own another item. User need to get a job!")
     }
   }
   return (
@@ -72,7 +72,7 @@ export default connect(
     }
   },
   (dispatch, otherProps)=> {
-    const { history } = otherProps
+    const { history } = otherProps;
     return {
       updateThing: (thing, userId)=> {
         thing = {...thing, userId: userId * 1 };
@@ -82,10 +82,8 @@ export default connect(
         thing = {...thing, ranking: thing.ranking + dir};
         dispatch(updateThing(thing));
       },
-      deleteThing: async(thing)=> {
-        await axios.delete(`/api/things/${thing.id}`);
-        dispatch({ type: 'DELETE_THING', thing });
-        history.push('/things');
+      deleteThing: (thing)=> {
+        dispatch(deleteThing(thing, history));
       }
     };
   }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { removeThingFromUser, updateUserRank} from './store';
+import { removeThingFromUser, updateUserRank, createUser, deleteUser } from './store';
 import { Link } from 'react-router-dom';
 import { faker } from '@faker-js/faker';
 import axios from 'axios';
@@ -57,18 +57,14 @@ const mapStateToProps = (state)=> {
 const mapDispatch = (dispatch, otherProps)=> {
   const { history } = otherProps;
   return {
-    createUser: async() => {
-      const user = (await axios.post('/api/users', {name: faker.name.findName()})).data;
-      dispatch({ type: 'CREATE_USER', user});
-      history.push(`/users/${user.id}`);
+    createUser: () => {
+      dispatch(createUser(history));
     },
     removeThingFromUser: (thing)=> {
-      dispatch(removeThingFromUser(thing))
+      dispatch(removeThingFromUser(thing));
     },
-    deleteUser: async(user) => {
-      await axios.delete(`/api/users/${user.id}`);
-      dispatch({ type: 'DELETE_USER', user});
-      history.push('/users');
+    deleteUser: (user) => {
+      dispatch(deleteUser(user, history));
     },
     updateUserRank: (user, dir)=> {
       user = {...user, ranking: user.ranking + dir};

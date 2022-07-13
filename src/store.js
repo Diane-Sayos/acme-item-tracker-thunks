@@ -52,21 +52,21 @@ const updateThing = (thing)=> {
     dispatch({ type: 'UPDATE_THING', thing });
   };
 };
-// const deleteThing = (thing)=> {
-//   return async(dispatch)=> {
-//     await axios.delete(`/api/things/${thing.id}`);
-//     dispatch({ type: 'DELETE_THING', thing });
-//     history.push(`/things/${thing.id`});
-//   };
-// };
+const deleteThing = (thing, history)=> {
+  return async(dispatch)=> {
+    await axios.delete(`/api/things/${thing.id}`);
+    dispatch({ type: 'DELETE_THING', thing });
+    history.push('/things');
+  };
+};
 //thunk for createUser--could not figure out how to add history
-// const createUser = () => {
-//   return async(dispatch)=> {
-//     const user = (await axios.post('/api/users', {name: faker.name.findName()})).data;
-//     dispatch({ type: 'CREATE_USER', user});
-//     history.push(`/users/${user.id}`);
-//   };
-// };
+const createUser = (history) => {
+  return async(dispatch)=> {
+    const user = (await axios.post('/api/users', {name: faker.name.findName()})).data;
+    dispatch({ type: 'CREATE_USER', user});
+    history.push(`/users/${user.id}`);
+  };
+};
 const removeThingFromUser = (thing) => {
   return async(dispatch) => {
     thing = {...thing, userId: null}
@@ -75,12 +75,13 @@ const removeThingFromUser = (thing) => {
   };
 };
 //thunk for deleteUser--cannot figure out how to add history
-// const deleteUser = (user) => {
-//   async(dispatch) => {
-//     await axios.delete(`/api/users/${user.id}`);
-//       dispatch({ type: 'DELETE_USER', user});
-//   }
-// };
+const deleteUser = (user, history) => {
+  return async(dispatch) => {
+    await axios.delete(`/api/users/${user.id}`);
+      dispatch({ type: 'DELETE_USER', user});
+      history.push('/users');
+  }
+};
 const createThing = () => {
   return async(dispatch) => {
     const response = await axios.post('/api/things', { name: faker.commerce.product()});
@@ -97,7 +98,7 @@ const updateUserRank = (user)=> {
 const middleware = applyMiddleware(logger, thunk);
 const store = createStore(reducer, middleware);
 
-export { updateThing, removeThingFromUser, createThing, updateUserRank };
+export { updateThing, removeThingFromUser, createUser, deleteUser, deleteThing, createThing, updateUserRank };
 
 export default store;
 
