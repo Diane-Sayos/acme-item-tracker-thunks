@@ -3,7 +3,6 @@ import ThingForm from './ThingForm';
 import { connect } from 'react-redux';
 import { updateThing, deleteThing } from './store';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 
 const Things = ({ things, users, deleteThing, increment, updateThing, match })=> {
   const thingId = match.params.id*1;

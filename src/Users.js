@@ -2,8 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { removeThingFromUser, updateUserRank, createUser, deleteUser } from './store';
 import { Link } from 'react-router-dom';
-import { faker } from '@faker-js/faker';
-import axios from 'axios';
 
 
 const Users = ({ users, createUser, deleteUser, things, removeThingFromUser, updateUserRank, match })=> {

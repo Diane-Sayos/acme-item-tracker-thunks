@@ -59,7 +59,7 @@ const deleteThing = (thing, history)=> {
     history.push('/things');
   };
 };
-//thunk for createUser--could not figure out how to add history
+
 const createUser = (history) => {
   return async(dispatch)=> {
     const user = (await axios.post('/api/users', {name: faker.name.findName()})).data;
@@ -74,7 +74,7 @@ const removeThingFromUser = (thing) => {
     dispatch({ type: 'UPDATE_THING', thing: updatedThing});
   };
 };
-//thunk for deleteUser--cannot figure out how to add history
+
 const deleteUser = (user, history) => {
   return async(dispatch) => {
     await axios.delete(`/api/users/${user.id}`);
